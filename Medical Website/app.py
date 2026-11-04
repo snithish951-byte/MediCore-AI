@@ -1,4 +1,4 @@
-
+import os
 from flask import (
     Flask, render_template, request,
     redirect, url_for, session
@@ -626,17 +626,14 @@ def patient_assessment():
 # ==========================================
 # RUN APPLICATION
 # ==========================================
-
 if __name__ == "__main__":
 
     print("MEDICORE AI STARTING...")
-    print("Open http://127.0.0.1:5000")
-    print("Mobile access: http://YOUR-LAPTOP-IP:5000")
 
     app.run(
         host="0.0.0.0",
-        port=5000,
-        debug=True,
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False,
         use_reloader=False,
         threaded=True
     )
