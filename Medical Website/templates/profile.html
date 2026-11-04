@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | MediCore AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #050b18;
+            color: #eaf7ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            background: #00c8ff;
+            filter: blur(160px);
+            opacity: 0.12;
+            top: -150px;
+            right: -100px;
+            z-index: -1;
+        }
+
+        .header {
+            padding: 25px 7%;
+            background: rgba(10, 25, 48, 0.85);
+            border-bottom: 1px solid rgba(0, 220, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            color: #00d9ff;
+            font-size: 25px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            color: #9bb8ce;
+            margin-top: 6px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 65px auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: rgba(12, 29, 52, 0.88);
+            border: 1px solid rgba(0, 217, 255, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 35px rgba(0, 180, 255, 0.08);
+            animation: appear 0.8s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #007bff, #00e5ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.35);
+        }
+
+        h2 {
+            text-align: center;
+            color: #00e0ff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8caac2;
+            margin-bottom: 35px;
+        }
+
+        .info {
+            margin: 18px 0;
+            padding: 20px;
+            background: rgba(2, 15, 32, 0.8);
+            border: 1px solid rgba(0, 217, 255, 0.15);
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .info:hover {
+            border-color: #00d9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.1);
+        }
+
+        .info strong {
+            display: block;
+            color: #00d9ff;
+            margin-bottom: 9px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info span {
+            color: #eaf7ff;
+            font-size: 17px;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            text-align: center;
+            color: #7df5c2;
+            margin-top: 25px;
+            font-size: 13px;
+        }
+
+        .back {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 13px 25px;
+            background: linear-gradient(90deg, #007bff, #00d9ff);
+            color: #001321;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 9px;
+            transition: 0.3s;
+        }
+
+        .back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .profile-card {
+                padding: 25px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div>
+            <h1>MEDICORE AI</h1>
+            <p>Medical Diagnosis System</p>
+        </div>
+        <div>MY PROFILE</div>
+    </div>
+
+    <div class="container">
+        <div class="profile-card">
+
+            <div class="profile-icon">👤</div>
+
+            <h2>Patient Profile</h2>
+            <p class="subtitle">Your registered account information</p>
+
+            <div class="info">
+                <strong>Username</strong>
+                <span>{{ user.username }}</span>
+            </div>
+
+            <div class="info">
+                <strong>Email Address</strong>
+                <span>{{ user.email }}</span>
+            </div>
+
+            <div class="info">
+                <strong>User ID</strong>
+                <span>{{ user.id }}</span>
+            </div>
+
+            <div class="status">
+                ● Account information
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>
+

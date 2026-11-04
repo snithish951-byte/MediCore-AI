@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Medical Report | MEDICORE AI</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    color: #e8f8ff;
+    background:
+        radial-gradient(circle at 15% 15%, #073b59, transparent 35%),
+        radial-gradient(circle at 90% 85%, #102b5a, transparent 35%),
+        #050b18;
+}
+
+.glow {
+    position: fixed;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: #00d9ff;
+    filter: blur(130px);
+    opacity: 0.13;
+    pointer-events: none;
+    animation: float 9s ease-in-out infinite alternate;
+}
+
+.glow.one { top: -100px; left: -100px; }
+.glow.two {
+    bottom: -100px;
+    right: -100px;
+    background: #315dff;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    from { transform: translate(0,0); }
+    to { transform: translate(100px,70px); }
+}
+
+header {
+    position: relative;
+    z-index: 2;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5,15,32,.8);
+    border-bottom: 1px solid rgba(0,220,255,.2);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    color: #00e5ff;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.logo span { color: white; }
+
+nav { display: flex; gap: 20px; }
+
+nav a {
+    color: #a9c5d9;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+nav a:hover { color: #00e5ff; }
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 88%;
+    max-width: 1050px;
+    margin: 45px auto;
+    animation: enter .8s ease;
+}
+
+@keyframes enter {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.heading { margin-bottom: 28px; }
+
+.heading small {
+    color: #00e5ff;
+    letter-spacing: 3px;
+    font-size: 11px;
+}
+
+.heading h1 {
+    font-size: clamp(28px,5vw,40px);
+    margin: 12px 0;
+}
+
+.heading h1 span { color: #00dfff; }
+
+.heading p {
+    color: #8caabd;
+    font-size: 14px;
+}
+
+.report-card {
+    padding: 28px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(0,220,255,.23);
+    border-radius: 18px;
+    background: linear-gradient(135deg,
+        rgba(14,37,61,.94),
+        rgba(8,20,40,.94));
+    backdrop-filter: blur(15px);
+    animation: enter .8s ease both;
+    transition: .3s;
+}
+
+.report-card:hover {
+    border-color: #00e5ff;
+    box-shadow: 0 0 25px rgba(0,200,255,.13);
+}
+
+.report-title {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.report-title h2 {
+    color: #00e5ff;
+    font-size: 20px;
+}
+
+.badge {
+    color: #00e5ff;
+    border: 1px solid rgba(0,229,255,.35);
+    background: rgba(0,229,255,.07);
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 16px;
+}
+
+.field {
+    padding: 16px;
+    background: rgba(0,10,25,.4);
+    border-radius: 11px;
+}
+
+.field label {
+    display: block;
+    color: #7f9db2;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+}
+
+.field p {
+    color: #e3f6ff;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.highlight {
+    padding: 17px;
+    margin-top: 18px;
+    border-left: 3px solid #00e5ff;
+    background: rgba(0,205,255,.07);
+    border-radius: 8px;
+}
+
+.highlight label {
+    display: block;
+    color: #00e5ff;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.highlight p {
+    color: #d8f3ff;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.button {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: #00dfff;
+    color: #00121d;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.button:hover {
+    background: white;
+    box-shadow: 0 0 20px #00dfff;
+    transform: translateY(-3px);
+}
+
+.secondary {
+    color: #00e5ff;
+    background: transparent;
+    border: 1px solid #00cde9;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #58758b;
+    font-size: 12px;
+}
+
+@media(max-width:650px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    nav { flex-wrap: wrap; gap: 14px; }
+    .container { width: 92%; margin-top: 30px; }
+    .report-card { padding: 18px; }
+}
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    .glow, header, footer, .buttons { display: none !important; }
+    .container { width: 100%; margin: 0; }
+    .report-card {
+        background: white;
+        color: black;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+    .field p, .highlight p, .heading p { color: #222; }
+    .field, .highlight { background: white; border: 1px solid #ddd; }
+    .field label, .highlight label, .heading small,
+    .heading h1 span, .report-title h2 { color: #17365d; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<header>
+    <div class="logo">MEDICORE <span>AI</span></div>
+
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('medical_history') }}">Medical History</a>
+        <a href="{{ url_for('previous_results') }}">Previous Results</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <small>MEDICAL DATA CENTER / 03</small>
+        <h1>Full <span>Medical Report</span></h1>
+        <p>Individual patient assessment record.</p>
+    </section>
+
+    <section class="report-card">
+
+        <div class="report-title">
+            <h2>Patient Information</h2>
+            <span class="badge">RECORD #{{ record.id }}</span>
+        </div>
+
+        <div class="grid">
+
+            <div class="field">
+                <label>Patient Name</label>
+                <p>{{ record.patient_name or 'Not available' }}</p>
+            </div>
+
+            <div class="field">
+                <label>Age</label>
+                <p>{{ record.age or 'Not available' }}</p>
+            </div>
+
+            <div class="field">
+                <label>Gender</label>
+                <p>{{ record.gender or 'Not available' }}</p>
+            </div>
+
+            <div class="field">
+                <label>Symptoms</label>
+                <p>{{ record.symptoms or 'Not available' }}</p>
+            </div>
+
+            <div class="field">
+                <label>Previous Diseases</label>
+                <p>{{ record.previous_diseases or 'None recorded' }}</p>
+            </div>
+
+        </div>
+
+        <div class="highlight">
+            <label>ASSESSMENT INFORMATION</label>
+            <p>{{ record.diagnosis_result or 'No additional assessment information recorded.' }}</p>
+        </div>
+
+    </section>
+
+    <div class="buttons">
+        <a class="button"
+           href="{{ url_for('previous_results') }}">
+            ← Back to Results
+        </a>
+
+        <button class="button secondary" onclick="window.print()">
+            Print Report
+        </button>
+    </div>
+
+</main>
+
+<footer>
+    MEDICORE AI | Medical Records Management System
+</footer>
+
+</body>
+</html>
