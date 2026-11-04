@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MEDICORE AI | Symptom Checker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 15% 15%, #123c59 0, transparent 35%),
+                radial-gradient(circle at 85% 80%, #102d50 0, transparent 35%),
+                #07111f;
+            color: #eaf6ff;
+        }
+
+        header {
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1d3c55;
+            background: rgba(5, 17, 31, 0.85);
+        }
+
+        .logo {
+            color: #42dcff;
+            font-size: 23px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .status {
+            color: #55e6bd;
+            font-size: 13px;
+        }
+
+        .status::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #55e6bd;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 10px #55e6bd;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 45px auto;
+        }
+
+        .hero {
+            margin-bottom: 28px;
+        }
+
+        .tag {
+            color: #42dcff;
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 13px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 5vw, 42px);
+            margin-bottom: 12px;
+        }
+
+        h1 span {
+            color: #42dcff;
+        }
+
+        .subtitle {
+            color: #9bb3c8;
+            line-height: 1.7;
+        }
+
+        .panel {
+            background: rgba(13, 31, 50, 0.88);
+            border: 1px solid #214761;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 15px 45px #00000050;
+            animation: appear 0.7s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 21px;
+        }
+
+        .counter {
+            color: #42dcff;
+            background: #123b54;
+            border: 1px solid #27627f;
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .description {
+            color: #9bb3c8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px 16px;
+            background: #091a2b;
+            border: 1px solid #294b65;
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            border-color: #42dcff;
+            box-shadow: 0 0 12px #42dcff30;
+        }
+
+        .symptoms {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(210px, 1fr)
+            );
+            gap: 13px;
+            margin: 25px 0;
+        }
+
+        .symptom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            min-height: 55px;
+            background: #0a1c2e;
+            border: 1px solid #24445c;
+            border-radius: 11px;
+            color: #dceaf5;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .symptom:hover {
+            border-color: #42dcff;
+            background: #102d43;
+            transform: translateY(-3px);
+        }
+
+        .symptom.selected {
+            border-color: #42dcff;
+            background: #12364c;
+            box-shadow: 0 0 15px #42dcff20;
+        }
+
+        .symptom input {
+            width: 17px;
+            height: 17px;
+            accent-color: #19c9f5;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .symptom-name {
+            font-size: 14px;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 9px;
+            background: #491d29;
+            color: #ffb5c0;
+            border: 1px solid #8e3547;
+        }
+
+        .empty {
+            color: #a9bed0;
+            padding: 25px 0;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin-top: 25px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 15px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .analyze {
+            color: #031521;
+            background: linear-gradient(110deg, #42dcff, #48f0c0);
+            box-shadow: 0 0 20px #42dcff35;
+        }
+
+        .analyze:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 28px #42dcff70;
+        }
+
+        .clear {
+            color: #d9eafa;
+            background: #1a354d;
+            border: 1px solid #315671;
+        }
+
+        .clear:hover {
+            background: #254964;
+        }
+
+        .notice {
+            margin-top: 25px;
+            padding: 16px;
+            border-left: 3px solid #e9b85b;
+            border-radius: 7px;
+            background: #302b20;
+            color: #f2d9a6;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .navigation {
+            margin-top: 25px;
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            color: #42dcff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #71899d;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 18px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .symptoms {
+                grid-template-columns: 1fr;
+            }
+
+            .actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">MEDICORE <span>AI</span></div>
+    <div class="status">SYSTEM ONLINE</div>
+</header>
+
+<div class="container">
+
+    <section class="hero">
+        <div class="tag">AI HEALTH ANALYSIS MODULE</div>
+
+        <h1>Smart <span>Symptom Checker</span></h1>
+
+        <p class="subtitle">
+            Select the symptoms you are experiencing.
+            Our educational matching system will compare
+            your selections with the database.
+        </p>
+    </section>
+
+    <main class="panel">
+
+        <div class="panel-heading">
+            <h2>Select Your Symptoms</h2>
+
+            <div class="counter" id="counter">
+                0 Selected
+            </div>
+        </div>
+
+        <p class="description">
+            Select one or more symptoms from the list below.
+            You can search for a symptom using the search box.
+        </p>
+
+        {% if message %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        {% if symptoms %}
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="Search symptoms..."
+            autocomplete="off"
+        >
+
+        <form
+            method="POST"
+            action="{{ url_for('symptom_checker') }}"
+            id="symptomForm"
+        >
+
+            <div class="symptoms" id="symptomList">
+
+                {% for symptom in symptoms %}
+
+                <label class="symptom">
+
+                    <input
+                        type="checkbox"
+                        name="symptoms"
+                        value="{{ symptom.id }}"
+                    >
+
+                    <span class="symptom-name">
+                        {{ symptom.symptom_name }}
+                    </span>
+
+                </label>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="actions">
+
+                <button type="submit" class="analyze">
+                    Analyze Selected Symptoms
+                </button>
+
+                <button
+                    type="button"
+                    class="clear"
+                    onclick="clearSymptoms()"
+                >
+                    Clear Selection
+                </button>
+
+            </div>
+
+        </form>
+
+        {% else %}
+
+            <p class="empty">
+                No symptoms are available in the database yet.
+                Please add symptom records to the MySQL
+                symptoms table.
+            </p>
+
+        {% endif %}
+
+        <div class="notice">
+            <strong>Medical Disclaimer:</strong>
+            This is an educational symptom-matching tool.
+            Its results are not a medical diagnosis and its
+            match percentage is not a disease probability.
+            Consult a qualified healthcare professional
+            for medical advice.
+        </div>
+
+        <nav class="navigation">
+            <a href="{{ url_for('dashboard') }}">← Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+
+    </main>
+
+</div>
+
+<footer>
+    MEDICORE AI · Medical Information System
+</footer>
+
+<script>
+
+    const checkboxes = document.querySelectorAll(
+        'input[name="symptoms"]'
+    );
+
+    const counter = document.getElementById("counter");
+
+    function updateCounter() {
+
+        let selected = 0;
+
+        checkboxes.forEach(function(box) {
+
+            const card = box.closest(".symptom");
+
+            if (box.checked) {
+                selected++;
+                card.classList.add("selected");
+            } else {
+                card.classList.remove("selected");
+            }
+
+        });
+
+        counter.textContent = selected + " Selected";
+    }
+
+    checkboxes.forEach(function(box) {
+        box.addEventListener("change", updateCounter);
+    });
+
+    function clearSymptoms() {
+
+        checkboxes.forEach(function(box) {
+            box.checked = false;
+        });
+
+        updateCounter();
+    }
+
+    const searchInput = document.getElementById("searchInput");
+
+    if (searchInput) {
+
+        searchInput.addEventListener("input", function() {
+
+            const searchText = this.value.toLowerCase();
+
+            document.querySelectorAll(".symptom").forEach(
+                function(card) {
+
+                    const symptomName =
+                        card.textContent.toLowerCase();
+
+                    card.style.display =
+                        symptomName.includes(searchText)
+                        ? "flex"
+                        : "none";
+
+                }
+            );
+
+        });
+
+    }
+
+    const form = document.getElementById("symptomForm");
+
+    if (form) {
+
+        form.addEventListener("submit", function(event) {
+
+            const selected = document.querySelectorAll(
+                'input[name="symptoms"]:checked'
+            );
+
+            if (selected.length === 0) {
+                event.preventDefault();
+                alert("Please select at least one symptom.");
+            }
+
+        });
+
+    }
+
+    updateCounter();
+
+</script>
+
+</body>
+</html>

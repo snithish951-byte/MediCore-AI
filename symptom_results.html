@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Medical Analysis Results</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            padding: 25px 15px;
+            color: #eaf6ff;
+            background:
+                radial-gradient(circle at 10% 10%, #123b65, transparent 35%),
+                radial-gradient(circle at 90% 90%, #073b4c, transparent 35%),
+                #07111f;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+            padding: 30px;
+            background: rgba(13, 29, 49, 0.95);
+            border: 1px solid rgba(0, 217, 255, 0.25);
+            border-radius: 18px;
+            box-shadow: 0 0 35px rgba(0, 217, 255, 0.10);
+            animation: appear 0.7s ease;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .medical-icon {
+            color: #00d9ff;
+            font-size: 44px;
+            text-shadow: 0 0 20px #00d9ff;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 29px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #91b8ce;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            color: #55f5d0;
+            background: rgba(0, 255, 190, 0.08);
+            border: 1px solid rgba(0, 255, 190, 0.3);
+            border-radius: 30px;
+            font-size: 12px;
+        }
+
+        .section-title {
+            color: #00d9ff;
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .result {
+            position: relative;
+            overflow: hidden;
+            background: #10243a;
+            border: 1px solid #294a65;
+            border-left: 4px solid #00d9ff;
+            padding: 23px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            animation: cardAppear 0.6s ease both;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result h2 {
+            color: #ffffff;
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            line-height: 1.7;
+            margin: 17px 0;
+            color: #b9d1e0;
+            font-size: 14px;
+        }
+
+        .info strong {
+            display: block;
+            color: #00d9ff;
+            margin-bottom: 7px;
+        }
+
+        .count {
+            display: inline-block;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            color: #61eaff;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .percentage {
+            font-size: 27px;
+            font-weight: bold;
+            color: #00e5ff;
+            text-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
+        }
+
+        .progress {
+            width: 100%;
+            height: 12px;
+            background: #263e55;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #087fce, #00e5ff, #00f0b5);
+            border-radius: 20px;
+            transition: width 1.3s ease;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px 15px;
+            background: rgba(255, 190, 70, 0.07);
+            border: 1px solid rgba(255, 190, 70, 0.3);
+            border-radius: 12px;
+            color: #ffcf80;
+        }
+
+        .empty p {
+            margin-top: 10px;
+            color: #c8b58e;
+            line-height: 1.6;
+        }
+
+        .disclaimer {
+            background: rgba(255, 190, 70, 0.07);
+            border: 1px solid rgba(255, 190, 70, 0.25);
+            border-left: 4px solid #e9b44c;
+            padding: 17px;
+            margin-top: 25px;
+            border-radius: 10px;
+            line-height: 1.7;
+            color: #d9c69d;
+            font-size: 13px;
+        }
+
+        .disclaimer strong {
+            color: #ffd477;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin-top: 28px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            background: linear-gradient(90deg, #087fce, #00a9c9);
+            color: white;
+            text-decoration: none;
+            padding: 13px 23px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .buttons a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 18px rgba(0, 217, 255, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 28px;
+            color: #7894a9;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .result {
+                padding: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="medical-icon">✚</div>
+
+        <h1>Medical Analysis Results</h1>
+
+        <p>AI-Assisted Symptom Matching System</p>
+
+        <div class="status">● ANALYSIS COMPLETED</div>
+    </div>
+
+    <h2 class="section-title">01 / Matching Results</h2>
+
+    {% if results %}
+
+        {% for result in results %}
+
+        <div class="result">
+
+            <h2>{{ result.disease_name }}</h2>
+
+            <div class="info">
+                <strong>Matched Symptoms</strong>
+
+                <span class="count">
+                    {{ result.matched_symptoms }} Symptoms Matched
+                </span>
+            </div>
+
+            <div class="info">
+
+                <strong>Symptom Match Percentage</strong>
+
+                <span class="percentage">
+                    {{ result.match_percentage }}%
+                </span>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                         data-value="{{ result.match_percentage }}">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="info">
+                <strong>Disease Description</strong>
+
+                {{ result.description or "Description not available." }}
+            </div>
+
+            <div class="info">
+                <strong>Recommended Precautions</strong>
+
+                {{ result.precautions or "Please consult a qualified healthcare professional." }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>No Matching Diseases Found</h2>
+
+            <p>
+                No matching database records were found for the
+                selected symptoms. You can try checking again.
+            </p>
+        </div>
+
+    {% endif %}
+
+    <div class="disclaimer">
+        <strong>Medical Disclaimer</strong><br>
+
+        This system provides educational information based on
+        database symptom matching. The match percentage represents
+        symptom overlap, not the probability of having a disease.
+        It is not a confirmed diagnosis and cannot replace medical
+        evaluation by a qualified healthcare professional.
+    </div>
+
+    <div class="buttons">
+
+        <a href="{{ url_for('symptom_checker') }}">
+            ↻ Check Again
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+    </div>
+
+    <div class="footer">
+        Medical Assistance System | Educational Project
+    </div>
+
+</div>
+
+<script>
+    window.addEventListener("load", function () {
+
+        const bars = document.querySelectorAll(".progress-bar");
+
+        bars.forEach(function (bar) {
+
+            let value = Number(bar.dataset.value);
+
+            if (!Number.isFinite(value)) {
+                value = 0;
+            }
+
+            value = Math.max(0, Math.min(100, value));
+
+            setTimeout(function () {
+                bar.style.width = value + "%";
+            }, 150);
+
+        });
+
+    });
+</script>
+
+</body>
+</html>
+

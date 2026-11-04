@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Previous Results | MEDICORE AI</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    color: #e8f8ff;
+    background:
+        radial-gradient(circle at 15% 15%, #073b59, transparent 35%),
+        radial-gradient(circle at 90% 85%, #102b5a, transparent 35%),
+        #050b18;
+    overflow-x: hidden;
+}
+
+.glow {
+    position: fixed;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: #00d9ff;
+    filter: blur(130px);
+    opacity: 0.13;
+    pointer-events: none;
+    animation: float 9s ease-in-out infinite alternate;
+}
+
+.glow.one {
+    top: -100px;
+    left: -100px;
+}
+
+.glow.two {
+    bottom: -100px;
+    right: -100px;
+    background: #315dff;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    from { transform: translate(0, 0); }
+    to { transform: translate(100px, 70px); }
+}
+
+header {
+    position: relative;
+    z-index: 2;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5, 15, 32, 0.78);
+    border-bottom: 1px solid rgba(0, 220, 255, 0.2);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    color: #00e5ff;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+}
+
+.logo span {
+    color: white;
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+}
+
+nav a {
+    color: #a9c5d9;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 12px #00e5ff;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 88%;
+    max-width: 1100px;
+    margin: 48px auto;
+    animation: pageEnter 0.8s ease;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.heading {
+    margin-bottom: 30px;
+}
+
+.heading small {
+    color: #00e5ff;
+    font-size: 11px;
+    letter-spacing: 3px;
+}
+
+.heading h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 12px 0;
+}
+
+.heading h1 span {
+    color: #00dfff;
+    text-shadow: 0 0 20px rgba(0, 220, 255, 0.4);
+}
+
+.heading p {
+    color: #8caabd;
+    font-size: 14px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    padding: 22px;
+    background: rgba(13, 32, 54, 0.75);
+    border: 1px solid rgba(0, 221, 255, 0.22);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    transition: 0.35s;
+    animation: cardEnter 0.8s ease both;
+}
+
+.stat-card:hover {
+    transform: translateY(-7px);
+    border-color: #00e5ff;
+    box-shadow: 0 0 25px rgba(0, 220, 255, 0.16);
+}
+
+.stat-card .icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.stat-card h2 {
+    color: #00e5ff;
+    font-size: 28px;
+}
+
+.stat-card p {
+    color: #91adbf;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.report {
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 220, 255, 0.2);
+    border-radius: 17px;
+    background: linear-gradient(
+        135deg,
+        rgba(14, 37, 61, 0.94),
+        rgba(8, 20, 40, 0.94)
+    );
+    backdrop-filter: blur(15px);
+    transition: 0.35s;
+    animation: cardEnter 0.7s ease both;
+}
+
+.report:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 229, 255, 0.7);
+    box-shadow: 0 0 28px rgba(0, 200, 255, 0.14);
+}
+
+.report-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.report h2 {
+    font-size: 19px;
+}
+
+.report h2 a {
+    color: #00e5ff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.report h2 a:hover {
+    color: white;
+    text-shadow: 0 0 12px #00e5ff;
+}
+
+.report-id {
+    padding: 7px 13px;
+    color: #00e5ff;
+    font-size: 12px;
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    border-radius: 20px;
+    background: rgba(0, 229, 255, 0.07);
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.detail {
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(0, 10, 25, 0.4);
+}
+
+.detail label {
+    display: block;
+    color: #7f9db2;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.detail p {
+    color: #e3f6ff;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.disease {
+    margin-top: 18px;
+    padding: 15px;
+    border-left: 3px solid #00e5ff;
+    border-radius: 8px;
+    background: rgba(0, 205, 255, 0.07);
+}
+
+.disease label {
+    display: block;
+    color: #00e5ff;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.disease p {
+    color: #d8f3ff;
+    font-size: 14px;
+}
+
+.view-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    background: #00dfff;
+    color: #00121d;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.view-button:hover {
+    background: white;
+    box-shadow: 0 0 20px #00dfff;
+    transform: translateY(-3px);
+}
+
+.empty {
+    padding: 65px 20px;
+    text-align: center;
+    border: 1px dashed rgba(0, 220, 255, 0.35);
+    border-radius: 18px;
+    background: rgba(10, 30, 50, 0.55);
+}
+
+.empty .icon {
+    font-size: 48px;
+    margin-bottom: 18px;
+}
+
+.empty h3 {
+    color: #00e5ff;
+    margin-bottom: 10px;
+}
+
+.empty p {
+    color: #8daabd;
+    font-size: 14px;
+}
+
+.create-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 22px;
+    border-radius: 9px;
+    color: #00121d;
+    background: #00dfff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #58758b;
+    font-size: 12px;
+}
+
+@media(max-width: 650px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .container {
+        width: 92%;
+        margin-top: 30px;
+    }
+
+    .report {
+        padding: 18px;
+    }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<header>
+    <div class="logo">MEDICORE <span>AI</span></div>
+
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('patient_assessment') }}">Assessment</a>
+        <a href="{{ url_for('symptom_checker') }}">Symptom Checker</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <small>MEDICAL DATA CENTER / 02</small>
+        <h1>Previous <span>Results</span></h1>
+        <p>Access your previously saved patient assessment records.</p>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <div class="icon">▣</div>
+            <h2>{{ results|length }}</h2>
+            <p>Total Saved Reports</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">✚</div>
+            <h2>ACTIVE</h2>
+            <p>Report Management</p>
+        </div>
+    </section>
+
+    <h2 class="section-title">▸ Saved Assessment Reports</h2>
+
+    {% if results %}
+
+        {% for record in results %}
+
+        <article class="report">
+
+            <div class="report-top">
+                <h2>
+                    <a href="{{ url_for('view_report', report_id=record.id) }}">
+                        {{ record.patient_name or 'Patient Record' }}
+                    </a>
+                </h2>
+
+                <span class="report-id">
+                    REPORT #{{ record.id }}
+                </span>
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <label>Patient Name</label>
+                    <p>{{ record.patient_name or 'Not available' }}</p>
+                </div>
+
+                <div class="detail">
+                    <label>Age</label>
+                    <p>{{ record.age or 'Not available' }}</p>
+                </div>
+
+                <div class="detail">
+                    <label>Gender</label>
+                    <p>{{ record.gender or 'Not available' }}</p>
+                </div>
+
+                <div class="detail">
+                    <label>Symptoms</label>
+                    <p>{{ record.symptoms or 'Not available' }}</p>
+                </div>
+
+            </div>
+
+            <div class="disease">
+                <label>PREVIOUS DIAGNOSIS INFORMATION</label>
+                <p>{{ record.previous_diseases or 'No previous diseases recorded' }}</p>
+            </div>
+
+            <a class="view-button"
+               href="{{ url_for('view_report', report_id=record.id) }}">
+                View Full Report →
+            </a>
+
+        </article>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <div class="icon">✚</div>
+            <h3>No Previous Results Found</h3>
+            <p>Your saved assessment reports will appear here.</p>
+
+            <a href="{{ url_for('patient_assessment') }}"
+               class="create-button">
+                Create New Assessment
+            </a>
+        </div>
+
+    {% endif %}
+
+</main>
+
+<footer>
+    MEDICORE AI | Medical Records Management System
+</footer>
+
+</body>
+</html>

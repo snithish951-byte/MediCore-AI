@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICORE AI | Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #070d19;
+    --panel: #101b2d;
+    --cyan: #20d9ef;
+    --blue: #458cff;
+    --text: #eaf5ff;
+    --muted: #91a5bd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: #087dba;
+    filter: blur(180px);
+    opacity: .13;
+    top: -200px;
+    right: -100px;
+    pointer-events: none;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 245px;
+    background: #0b1423;
+    border-right: 1px solid #1b3048;
+    padding: 28px 18px;
+    position: fixed;
+    height: 100vh;
+    z-index: 5;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--cyan);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: white;
+}
+
+.tagline {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 42px;
+}
+
+.nav-title {
+    color: #71859d;
+    font-size: 10px;
+    margin: 25px 10px 12px;
+    letter-spacing: 1.5px;
+}
+
+.nav-link {
+    display: block;
+    text-decoration: none;
+    color: #aabbd0;
+    padding: 13px 12px;
+    margin-bottom: 7px;
+    border-radius: 10px;
+    font-size: 13px;
+    transition: .3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: linear-gradient(90deg, #123e59, #10273c);
+    color: var(--cyan);
+    box-shadow: inset 3px 0 var(--cyan);
+    transform: translateX(3px);
+}
+
+.main {
+    margin-left: 245px;
+    width: calc(100% - 245px);
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.topbar h2 {
+    font-size: 23px;
+}
+
+.topbar p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.profile {
+    padding: 12px 17px;
+    border: 1px solid #263d57;
+    border-radius: 12px;
+    color: var(--cyan);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.hero {
+    padding: 30px;
+    border: 1px solid #1d6079;
+    border-radius: 18px;
+    background: linear-gradient(110deg, #102d43, #111d34, #10182b);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+    animation: appear .8s ease;
+}
+
+.hero::after {
+    content: "✚";
+    position: absolute;
+    right: 60px;
+    top: 15px;
+    font-size: 115px;
+    color: #20d9ef;
+    opacity: .08;
+    animation: float 4s infinite ease-in-out;
+}
+
+.hero h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: var(--cyan);
+}
+
+.hero p {
+    color: #afc3d9;
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 500px;
+}
+
+.status {
+    display: inline-block;
+    margin-top: 20px;
+    background: #123c3b;
+    color: #62e9bc;
+    padding: 9px 13px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.section-title {
+    font-size: 17px;
+    margin: 28px 0 17px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 17px;
+}
+
+.card {
+    background: linear-gradient(145deg, #14243a, #0e192a);
+    border: 1px solid #20364f;
+    border-radius: 15px;
+    padding: 20px;
+    transition: .3s;
+    animation: appear .8s ease;
+}
+
+.card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px #20d9ef16;
+}
+
+.card-icon {
+    font-size: 25px;
+    margin-bottom: 17px;
+}
+
+.card h3 {
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    min-height: 35px;
+}
+
+.action {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--cyan);
+    font-size: 11px;
+    margin-top: 16px;
+    font-weight: 700;
+}
+
+.action:hover {
+    color: white;
+}
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid #20364f;
+    padding: 22px;
+    border-radius: 15px;
+}
+
+.panel h3 {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 17px 0;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.bar {
+    height: 7px;
+    flex: 1;
+    border-radius: 10px;
+    background: #263b50;
+    overflow: hidden;
+}
+
+.bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    border-radius: 10px;
+    animation: grow 1.8s ease forwards;
+}
+
+.quick {
+    display: block;
+    text-decoration: none;
+    padding: 13px;
+    margin: 10px 0;
+    background: #16273c;
+    border-radius: 9px;
+    color: #dcecff;
+    font-size: 12px;
+    transition: .3s;
+}
+
+.quick:hover {
+    background: #1b3e59;
+    color: var(--cyan);
+}
+
+.footer {
+    text-align: center;
+    color: #667b94;
+    font-size: 10px;
+    padding: 35px 0 10px;
+}
+
+@keyframes appear {
+    from {opacity: 0; transform: translateY(15px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes float {
+    50% {transform: translateY(-12px) rotate(10deg);}
+}
+
+@keyframes grow {
+    to {width: var(--width);}
+}
+
+@media(max-width: 1050px) {
+    .grid {grid-template-columns: repeat(2, 1fr);}
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 15px;
+    }
+
+    .sidebar .nav-title {display:none;}
+
+    .sidebar nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+        margin-top: 12px;
+    }
+
+    .nav-link {
+        white-space: nowrap;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .layout {display: block;}
+
+    .main {
+        margin: 0;
+        width: 100%;
+        padding: 18px;
+    }
+
+    .grid {grid-template-columns: 1fr 1fr;}
+    .bottom-grid {grid-template-columns: 1fr;}
+    .hero h1 {font-size: 22px;}
+}
+
+@media(max-width: 400px) {
+    .grid {grid-template-columns: 1fr;}
+}
+</style>
+</head>
+
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="logo">✚ MEDI<span>CORE</span></div>
+    <div class="tagline">AI HEALTHCARE SYSTEM</div>
+
+    <div class="nav-title">MAIN MENU</div>
+
+    <nav>
+        <a class="nav-link active" href="{{ url_for('dashboard') }}">◈ Dashboard</a>
+        <a class="nav-link" href="{{ url_for('patient_assessment') }}">✚ Patient Assessment</a>
+        <a class="nav-link" href="{{ url_for('symptom_checker') }}">⌕ Symptom Checker</a>
+        <a class="nav-link" href="{{ url_for('medical_history') }}">▤ Medical History</a>
+        <a class="nav-link" href="{{ url_for('previous_results') }}">◉ Previous Results</a>
+        <a class="nav-link" href="{{ url_for('profile') }}">♙ My Profile</a>
+        <a class="nav-link" href="{{ url_for('logout') }}">⇥ Logout</a>
+    </nav>
+
+</aside>
+
+<main class="main">
+
+    <header class="topbar">
+        <div>
+            <h2>Medical Dashboard</h2>
+            <p>AI-powered healthcare intelligence platform</p>
+        </div>
+
+        <div class="profile">
+            ♙ {{ user.email }}
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to <span>MEDICORE AI</span></h1>
+
+        <p>
+            Your intelligent healthcare assistant.
+            Manage patient information, review medical history
+            and explore AI-assisted symptom analysis.
+        </p>
+
+        <div class="status">
+            ● SYSTEM INTERFACE ACTIVE
+        </div>
+    </section>
+
+    <h3 class="section-title">Healthcare Services</h3>
+
+    <section class="grid">
+
+        <div class="card">
+            <div class="card-icon">🧬</div>
+            <h3>AI Patient Assessment</h3>
+            <p>Enter patient information and symptoms for analysis.</p>
+            <a class="action" href="{{ url_for('patient_assessment') }}">
+                START ASSESSMENT →
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔬</div>
+            <h3>Symptom Checker</h3>
+            <p>Explore possible condition matches using symptoms.</p>
+            <a class="action" href="{{ url_for('symptom_checker') }}">
+                CHECK SYMPTOMS →
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📋</div>
+            <h3>Medical History</h3>
+            <p>Access previously saved patient information.</p>
+            <a class="action" href="{{ url_for('medical_history') }}">
+                VIEW HISTORY →
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📊</div>
+            <h3>Previous Results</h3>
+            <p>Review earlier assessment records.</p>
+            <a class="action" href="{{ url_for('previous_results') }}">
+                VIEW RESULTS →
+            </a>
+        </div>
+
+    </section>
+
+    <section class="bottom-grid">
+
+        <div class="panel">
+            <h3>✦ Platform Modules</h3>
+
+            <div class="bar-row">
+                <span>Patient Management</span>
+                <div class="bar"><span style="--width:90%"></span></div>
+            </div>
+
+            <div class="bar-row">
+                <span>Medical Records</span>
+                <div class="bar"><span style="--width:80%"></span></div>
+            </div>
+
+            <div class="bar-row">
+                <span>AI Interface</span>
+                <div class="bar"><span style="--width:95%"></span></div>
+            </div>
+
+            <p style="color:#71859d;font-size:10px;margin-top:18px;">
+                Decorative interface indicators, not measured system performance.
+            </p>
+        </div>
+
+        <div class="panel">
+            <h3>⚡ Quick Access</h3>
+
+            <a class="quick" href="{{ url_for('patient_assessment') }}">
+                + New Patient Assessment
+            </a>
+
+            <a class="quick" href="{{ url_for('symptom_checker') }}">
+                ◈ Open AI Symptom Checker
+            </a>
+
+            <a class="quick" href="{{ url_for('medical_history') }}">
+                ▤ Patient History
+            </a>
+
+            <a class="quick" href="{{ url_for('profile') }}">
+                ♙ Account Settings
+            </a>
+        </div>
+
+    </section>
+
+    <footer class="footer">
+        MEDICORE AI © 2026 | FUTURE HEALTHCARE TECHNOLOGY
+        <br><br>
+        For educational assistance only. Not a substitute for professional medical diagnosis.
+    </footer>
+
+</main>
+</div>
+</body>
+</html>

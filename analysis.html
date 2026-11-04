@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Medical Analysis | MEDICORE AI</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    color: #eafaff;
+    background:
+        radial-gradient(circle at 10% 15%, #073b59, transparent 35%),
+        radial-gradient(circle at 90% 85%, #102b5a, transparent 35%),
+        #050b18;
+    overflow-x: hidden;
+}
+
+.glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: #00d9ff;
+    filter: blur(130px);
+    opacity: .13;
+    pointer-events: none;
+    animation: floating 9s ease-in-out infinite alternate;
+}
+
+.glow.one { top: -120px; left: -120px; }
+
+.glow.two {
+    bottom: -120px;
+    right: -120px;
+    background: #315dff;
+    animation-delay: 2s;
+}
+
+@keyframes floating {
+    from { transform: translate(0,0); }
+    to { transform: translate(100px,70px); }
+}
+
+header {
+    position: relative;
+    z-index: 2;
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5,15,32,.8);
+    border-bottom: 1px solid rgba(0,220,255,.2);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    color: #00e5ff;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(0,229,255,.4);
+}
+
+.logo span { color: white; }
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: #a9c5d9;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #00e5ff;
+    text-shadow: 0 0 12px #00e5ff;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 1050px;
+    margin: 40px auto;
+    animation: pageEnter .8s ease;
+}
+
+@keyframes pageEnter {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.heading small {
+    color: #00e5ff;
+    letter-spacing: 3px;
+    font-size: 11px;
+}
+
+.heading h1 {
+    font-size: clamp(28px,5vw,42px);
+    margin: 13px 0;
+}
+
+.heading h1 span {
+    color: #00dfff;
+    text-shadow: 0 0 20px rgba(0,220,255,.4);
+}
+
+.heading p {
+    color: #8caabd;
+    font-size: 14px;
+}
+
+.section-title {
+    color: #00e5ff;
+    font-size: 19px;
+    margin: 30px 0 15px;
+}
+
+.card {
+    padding: 25px;
+    margin: 17px 0;
+    border: 1px solid rgba(0,220,255,.2);
+    border-radius: 17px;
+    background: linear-gradient(
+        135deg,
+        rgba(14,37,61,.94),
+        rgba(8,20,40,.94)
+    );
+    backdrop-filter: blur(15px);
+    transition: .35s;
+    animation: cardEnter .8s ease both;
+}
+
+.card:hover {
+    border-color: rgba(0,229,255,.7);
+    box-shadow: 0 0 25px rgba(0,200,255,.13);
+    transform: translateY(-4px);
+}
+
+@keyframes cardEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.patient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 14px;
+}
+
+.info {
+    padding: 15px;
+    background: rgba(0,10,25,.42);
+    border-radius: 10px;
+    border: 1px solid rgba(0,220,255,.08);
+    transition: .3s;
+}
+
+.info:hover {
+    border-color: rgba(0,220,255,.45);
+    background: rgba(0,220,255,.06);
+}
+
+.info label {
+    display: block;
+    color: #7f9db2;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.info p {
+    color: #e5f8ff;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.patient-name {
+    color: #00e5ff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.disease-card {
+    border-left: 3px solid #00e5ff;
+}
+
+.disease-card h3 {
+    color: #00e5ff;
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.count {
+    display: inline-block;
+    padding: 7px 13px;
+    color: #00e5ff;
+    background: rgba(0,220,255,.1);
+    border: 1px solid rgba(0,220,255,.3);
+    border-radius: 20px;
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+.percentage {
+    color: #00e5ff;
+    font-size: 32px;
+    font-weight: 800;
+    margin: 8px 0;
+    text-shadow: 0 0 15px rgba(0,220,255,.3);
+}
+
+.progress {
+    width: 100%;
+    height: 12px;
+    margin: 13px 0 22px;
+    background: #172c40;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    max-width: 100%;
+    background: linear-gradient(90deg,#087bcb,#00e5ff);
+    border-radius: 20px;
+    box-shadow: 0 0 15px #00dfff;
+    animation: progressLoad 1.5s ease forwards;
+}
+
+@keyframes progressLoad {
+    from { width: 0; }
+    to { width: var(--match-width); }
+}
+
+.description {
+    padding: 15px;
+    background: rgba(0,10,25,.4);
+    border-radius: 10px;
+    margin-top: 15px;
+    line-height: 1.7;
+}
+
+.description b {
+    display: block;
+    color: #00e5ff;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.description p {
+    color: #d5eaf6;
+    font-size: 14px;
+}
+
+.empty {
+    text-align: center;
+    padding: 35px;
+    color: #9bb8ca;
+}
+
+.empty h3 {
+    color: #00e5ff;
+    margin-bottom: 10px;
+}
+
+.note {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid rgba(255,190,60,.35);
+    border-left: 4px solid #ffbd45;
+    background: rgba(255,180,40,.07);
+    border-radius: 12px;
+    color: #e8d5a5;
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+.note b {
+    color: #ffd477;
+}
+
+.buttons {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 13px 23px;
+    margin: 7px;
+    border-radius: 9px;
+    background: #00dfff;
+    color: #00121d;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.button:hover {
+    background: white;
+    box-shadow: 0 0 20px #00dfff;
+    transform: translateY(-3px);
+}
+
+.secondary {
+    color: #00e5ff;
+    background: transparent;
+    border: 1px solid #00dfff;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #58758b;
+    font-size: 12px;
+}
+
+@media(max-width:650px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        gap: 13px;
+    }
+
+    .container {
+        width: 93%;
+        margin-top: 28px;
+    }
+
+    .card { padding: 18px; }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .glow, header, footer, .buttons {
+        display: none !important;
+    }
+
+    .container { width: 100%; margin: 0; }
+
+    .card {
+        background: white;
+        color: black;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .info, .description {
+        background: white;
+        border: 1px solid #ddd;
+    }
+
+    .info p, .description p {
+        color: black;
+    }
+
+    .info label, .description b,
+    .disease-card h3, .percentage {
+        color: #087e8b;
+    }
+
+    .note {
+        color: #333;
+        background: white;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<header>
+    <div class="logo">MEDICORE <span>AI</span></div>
+
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('patient_assessment') }}">Assessment</a>
+        <a href="{{ url_for('symptom_checker') }}">Symptom Checker</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <small>MEDICAL INTELLIGENCE SYSTEM / 04</small>
+        <h1>Medical <span>Analysis Report</span></h1>
+        <p>AI-assisted health information and symptom analysis</p>
+    </section>
+
+    <h2 class="section-title">✚ Patient Information</h2>
+
+    <section class="card">
+
+        <div class="patient-name">
+            {{ patient.patient_name|default('Patient', true) }}
+        </div>
+
+        <div class="patient-grid">
+
+            <div class="info">
+                <label>Gender</label>
+                <p>{{ patient.gender|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Age</label>
+                <p>{{ patient.age|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Temperature</label>
+                <p>{{ patient.temperature|default('Not provided', true) }}{% if patient.temperature %} °C{% endif %}</p>
+            </div>
+
+            <div class="info">
+                <label>Blood Pressure</label>
+                <p>{{ patient.blood_pressure|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Blood Sugar</label>
+                <p>{{ patient.blood_sugar|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Blood Group</label>
+                <p>{{ patient.blood_group|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Pulse Rate</label>
+                <p>{{ patient.pulse_rate|default('Not provided', true) }}{% if patient.pulse_rate %} bpm{% endif %}</p>
+            </div>
+
+            <div class="info">
+                <label>Oxygen Saturation</label>
+                <p>{{ patient.saturation|default('Not provided', true) }}{% if patient.saturation %}%{% endif %}</p>
+            </div>
+
+            <div class="info">
+                <label>Heart Rate</label>
+                <p>{{ patient.heart_rate|default('Not provided', true) }}{% if patient.heart_rate %} bpm{% endif %}</p>
+            </div>
+
+            <div class="info">
+                <label>ECG</label>
+                <p>{{ patient.ecg|default('Not provided', true) }}</p>
+            </div>
+
+            <div class="info">
+                <label>Symptoms</label>
+                <p>{{ patient.symptoms|default('Not provided', true) }}</p>
+            </div>
+
+        </div>
+    </section>
+
+    <h2 class="section-title">◈ Possible Disease Matches</h2>
+
+    {% if results %}
+
+        {% for result in results %}
+
+        <section class="card disease-card">
+
+            <h3>{{ result.disease_name }}</h3>
+
+            <span class="count">
+                {{ result.matched_symptoms }} Symptoms Matched
+            </span>
+
+            <p style="color:#8caabd; font-size:12px; margin-top:15px;">
+                DATABASE SYMPTOM OVERLAP
+            </p>
+
+            <div class="percentage">
+                {{ result.match_percentage }}%
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"
+                     style="--match-width: {{ [[result.match_percentage|float, 100]|min, 0]|max }}%;">
+                </div>
+            </div>
+
+            <div class="description">
+                <b>DISEASE DESCRIPTION</b>
+                <p>{{ result.description or "Not available" }}</p>
+            </div>
+
+            <div class="description">
+                <b>RECOMMENDED PRECAUTIONS</b>
+                <p>{{ result.precautions or "Please consult a qualified healthcare professional." }}</p>
+            </div>
+
+        </section>
+
+        {% endfor %}
+
+    {% else %}
+
+        <section class="card empty">
+            <h3>No Matching Diseases Found</h3>
+            <p>No matching disease information was found in the current database.</p>
+        </section>
+
+    {% endif %}
+
+    <section class="note">
+        <b>IMPORTANT MEDICAL DISCLAIMER</b><br><br>
+
+        This project provides educational health information only.
+        The displayed percentage represents symptom overlap with
+        database records, not the probability of having a disease.
+        It is not a medical diagnosis and cannot replace examination,
+        testing, or advice from a qualified healthcare professional.
+    </section>
+
+    <div class="buttons">
+
+        <a class="button"
+           href="{{ url_for('patient_assessment') }}">
+            ↻ New Assessment
+        </a>
+
+        <a class="button secondary"
+           href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <button class="button secondary"
+                onclick="window.print()">
+            Print Report
+        </button>
+
+    </div>
+
+</main>
+
+<footer>
+    MEDICORE AI | AI Healthcare Educational Project
+</footer>
+
+</body>
+</html>
